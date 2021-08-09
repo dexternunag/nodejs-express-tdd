@@ -10,6 +10,7 @@ describe('Todos API', () => {
                 .then((res) => {
                     expect(res.body).toEqual(expect.arrayContaining([
                         expect.objectContaining({
+                            id: expect.any(Number),
                             name: expect.any(String),
                             completed: expect.any(Boolean)
                         })
@@ -23,16 +24,19 @@ describe('Todos API', () => {
                 .expect('Content-Type', /json/)
                 .expect(200)
                 .then((res) => {
-                    expect(res.body).toEqual(expect.objectContaining({
-                        name: expect.any(String),
-                        completed: expect.any(Boolean)
-                    }))
+                    expect(res.body).toEqual(
+                        expect.objectContaining({
+                            id: expect.any(Number),
+                            name: expect.any(String),
+                            completed: expect.any(Boolean)
+                        })
+                    )
                 })
     })
 
     it('GET /todos/:id --> 404 if not found', () => {
         return request(app)
-                .get('/todos/123')
+                .get('/todos/999999')
                 .expect(404)
     })
 
@@ -45,10 +49,12 @@ describe('Todos API', () => {
                 .expect('Content-Type', /json/)
                 .expect(201)
                 .then((res) => {
-                    expect(res.body).toEqual(expect.objectContaining({
-                        name: expect.any('Do testing'),
-                        completed: false
-                    }))
+                    expect(res.body).toEqual(
+                        expect.objectContaining({
+                            name: 'Do testing',
+                            completed: false
+                        })
+                    )
                 })
     })
 
